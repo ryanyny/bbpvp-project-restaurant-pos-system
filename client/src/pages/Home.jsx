@@ -1,4 +1,5 @@
 import React from "react"
+import BottomNav from "../components/shared/BottomNav"
 
 const Home = () => {
     return (
@@ -9,6 +10,8 @@ const Home = () => {
 
                 {/* Right div */}
                 <div className="flex-[2] bg-blue-600"></div>
+
+                <BottomNav />
             </section>
         </div>
     )
