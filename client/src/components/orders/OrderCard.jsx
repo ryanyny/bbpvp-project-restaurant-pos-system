@@ -12,7 +12,7 @@ const OrderCard = () => {
 
                 <div>
                     <h1 className="text-white font-semibold">Ryan Febriansyah</h1>
-                    <p className="text-white/50 text-sm">#101 • Dine in</p>
+                    <p className="text-white/50 text-sm">#101 • Di tempat</p>
                 </div>
             </div>
             

@@ -5,7 +5,7 @@ import OrderCard from "../components/orders/OrderCard"
 import BackButton from "../components/shared/BackButton"
 
 const Orders = () => {
-    const [status, setStatus] = useState("semua")
+    const [status, setStatus] = useState("all")
 
     return (
         <section className="bg-[#1f1f1f] min-h-screen flex flex-col">
@@ -17,23 +17,23 @@ const Orders = () => {
 
                 <div className="flex items-center justify-around gap-4">
                     <button 
-                        onClick={() => setStatus("semua")} 
-                        className={`text-[#ababab] text-lg ${status === "semua" && "bg-[#383838] rounded-lg px-5 py-2"} rounded-lg px-5 py-2 font-semibold`}>
+                        onClick={() => setStatus("all")} 
+                        className={`text-[#ababab] text-lg ${status === "all" && "bg-[#383838] rounded-lg px-5 py-2"} rounded-lg px-5 py-2 font-semibold`}>
                         Semua
                     </button>
                     <button 
-                        onClick={() => setStatus("proses")} 
-                        className={`text-[#ababab] text-lg ${status === "proses" && "bg-[#383838] rounded-lg px-5 py-2"} rounded-lg px-5 py-2 font-semibold`}>
+                        onClick={() => setStatus("process")} 
+                        className={`text-[#ababab] text-lg ${status === "process" && "bg-[#383838] rounded-lg px-5 py-2"} rounded-lg px-5 py-2 font-semibold`}>
                         Proses
                     </button>
                     <button 
-                        onClick={() => setStatus("siap")} 
-                        className={`text-[#ababab] text-lg ${status === "siap" && "bg-[#383838] rounded-lg px-5 py-2"} rounded-lg px-5 py-2 font-semibold`}>
+                        onClick={() => setStatus("ready")} 
+                        className={`text-[#ababab] text-lg ${status === "ready" && "bg-[#383838] rounded-lg px-5 py-2"} rounded-lg px-5 py-2 font-semibold`}>
                         Siap
                     </button>
                     <button 
-                        onClick={() => setStatus("selesai")} 
-                        className={`text-[#ababab] text-lg ${status === "selesai" && "bg-[#383838] rounded-lg px-5 py-2"} rounded-lg px-5 py-2 font-semibold`}>
+                        onClick={() => setStatus("finished")} 
+                        className={`text-[#ababab] text-lg ${status === "finished" && "bg-[#383838] rounded-lg px-5 py-2"} rounded-lg px-5 py-2 font-semibold`}>
                         Selesai
                     </button>
                 </div>
