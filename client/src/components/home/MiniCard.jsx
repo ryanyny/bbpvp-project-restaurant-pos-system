@@ -15,7 +15,9 @@ const MiniCard = ({ title, icon, number, footerNum }) => {
 
         {/* Body */}
         <div className="mt-5">
-            <h1 className="text-white text-3xl font-bold">{number}</h1>
+            <h1 className="text-white text-3xl font-bold">
+                {title === "Total Pendapatan" ? `Rp${number}` : number}
+            </h1>
             <p className="text-sm mt-2 text-white/70">
                 <span className="text-[#02ca3a] font-semibold">{footerNum}%</span>{' '}dari kemarin
             </p>
