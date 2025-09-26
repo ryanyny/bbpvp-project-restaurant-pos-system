@@ -1,7 +1,7 @@
 import React from "react"
 import { useNavigate } from "react-router-dom"
 
-const TableCard = ({ name, status, initials }) => {
+const TableCard = ({ name, status, initials, seats }) => {
     const navigate = useNavigate()
 
     const handleClick = () => {
@@ -27,6 +27,7 @@ const TableCard = ({ name, status, initials }) => {
                 }`}>
                     {initials}
             </div>
+            <p className="text-[#ababab] text-xs">Kursi: <span className="text-[#f5f5f5]">{seats}</span></p>
         </div>
     </div>
     )

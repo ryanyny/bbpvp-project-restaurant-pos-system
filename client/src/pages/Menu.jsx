@@ -1,7 +1,8 @@
 import React from "react"
 import BottomNav from "../components/shared/BottomNav"
-import BackButton from "../components/shared/BackButton"
-import { MdRestaurantMenu } from "react-icons/md"
+import CustomerInfo from "../components/menu/CustomerInfo"
+import CartItems from "../components/menu/CartItems"
+import Bill from "../components/menu/Bill"
 import MenuContainer from "../components/menu/MenuContainer"
 
 const Menu = () => {
@@ -10,29 +11,23 @@ const Menu = () => {
         <main className="flex-1 overflow-y-auto pb-20">
             <section className="flex gap-6 px-6">
                 {/* Left div */}
-                <div className="flex-[3]">
-                    <div className="flex items-center justify-between px-10 py-4">
-                        <div className="flex items-center gap-4">
-                            <BackButton />
-                            <h1 className="text-[#f5f5f5] text-2xl font-bold tracking-wider">Menu</h1>
-                        </div>
-                        
-                        <div className="flex items-center justify-around gap-4">
-                            <div className="flex items-center gap-3 cursor-pointer">
-                                <MdRestaurantMenu className="text-[#f5f5f5] text-4xl" />
-                                <div className="flex flex-col items-start">
-                                    <h1 className="text-md text-[#f5f5f5] font-semibold">Customer Name</h1>
-                                    <p className="text-xs text-[#ababab] font-medium">Table No: 2</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <MenuContainer />
-                </div>
+                <MenuContainer   />
 
                 {/* Right div */}
-                <div className="flex-[1] hidden lg:block"></div>
+                <div className="flex-[1] bg-[#1a1a1a] mt-4 mr-3 hidden rounded-lg pt-2 lg:block">
+                    {/* Customer Info */}
+                    <CustomerInfo />
+
+                    <hr className="border-[#2a2a2a] border-t-2" />
+
+                    {/* Cart Items */}
+                    <CartItems />
+
+                    <hr className="border-[#2a2a2a] border-t-2" />
+
+                    {/* Bills */}
+                    <Bill />
+                </div>
             </section>
         </main>
         <BottomNav />
