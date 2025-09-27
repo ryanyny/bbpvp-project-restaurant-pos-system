@@ -8,9 +8,13 @@ const app = express()
 const PORT = config.port
 connectDB()
 
+app.use(express.json())
+
 app.get("/", (req, res) => {
     res.json({ message: "Hello from Server!" })
 })
+
+app.use("/api/user", require("./routes/userRoute"))
 
 app.use(globalErrorHandler)
 
