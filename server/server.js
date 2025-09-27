@@ -16,7 +16,13 @@ app.get("/", (req, res) => {
     res.json({ message: "Hello from Server!" })
 })
 
+app.get("/test", (req, res) => {
+    res.status(200).json({ success: true, message: "Server jalan normal 🚀" })
+})
+
+
 app.use("/api/user", require("./routes/userRoute"))
+app.use("/api/oder", require("./routes/orderRoute"))
 
 app.use(globalErrorHandler)
 
