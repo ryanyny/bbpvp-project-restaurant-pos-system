@@ -8,9 +8,6 @@ const PopularDishes = () => {
             {/* Header */}
             <div className="flex justify-between items-center px-6 py-4 border-b border-white/10">
                 <h1 className="text-white text-lg font-semibold">Hidangan Terpopuler</h1>
-                <button className="text-[#3b82f6] text-sm font-medium hover:underline">
-                    Lihat Semua
-                </button>
             </div>
 
             {/* List */}

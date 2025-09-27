@@ -1,16 +1,21 @@
 import React, { useState } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
+import { useDispatch } from "react-redux"
 import { FaHome } from "react-icons/fa"
 import { MdOutlineReorder, MdTableBar } from "react-icons/md"
 import { CiCircleMore } from "react-icons/ci"
 import {BiSolidDish} from "react-icons/bi"
 import Modal from "./Modal"
+import { setCustomer } from "../../redux/slice/customerSlice"
 
 const BottomNav = () => {
     const navigate = useNavigate()
     const location = useLocation()
+    const dispatch = useDispatch()
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [GuestCount, setGuestCount] = useState(0)
+    const [name, setName] = useState("")
+    const [phone, setPhone] = useState("")
     
     const openModal = () => setIsModalOpen(true)
     const closeModal = () => setIsModalOpen(false)
@@ -25,6 +30,11 @@ const BottomNav = () => {
     }
 
     const isActive = (path) => location.pathname === path
+
+    const handleCreateOrder = () => {
+        dispatch(setCustomer({ name, phone, guests: GuestCount }))
+        navigate("/tables")
+    }
 
     return (
         <div className="fixed bottom-0 left-0 right-0 bg-[#262626] p-2 h-16 flex justify-around z-50">
@@ -41,7 +51,7 @@ const BottomNav = () => {
                 <CiCircleMore className="inline-mr-2" size={20} />Lainnya
             </button>
 
-            <button onClick={openModal} className="absolute bottom-6 bg-[#f6b100] text-[#f5f5f5] rounded-full p-3 items-center">
+            <button disabled={isActive("/tables") || isActive("/menu")} onClick={openModal} className="absolute bottom-6 bg-[#f6b100] text-[#f5f5f5] rounded-full p-3 items-center">
                 <BiSolidDish size={30} />
             </button>
 
@@ -49,14 +59,14 @@ const BottomNav = () => {
                 <div>
                     <label className="block text-[#ababab] mb-2 text-sm font-medium">Nama Pelanggan</label>
                     <div className="flex items-center rounded-lg p-3 px-4 bg-[#1f1f1f]">
-                        <input type="text" name="" placeholder="Silahkan masukkan nama pelanggan" id="" className="bg-transparent flex-1 text-white focus:outline-none" />
+                        <input value={name} onChange={(e) => setName(e.target.value)} type="text" name="" placeholder="Silahkan masukkan nama pelanggan" id="" className="bg-transparent flex-1 text-white focus:outline-none" />
                     </div>
                 </div>
 
                 <div>
                     <label className="block text-[#ababab] mb-2 mt-3 text-sm font-medium">Nomor Pelanggan</label>
                     <div className="flex items-center rounded-lg p-3 px-4 bg-[#1f1f1f]">
-                        <input type="number" name="" placeholder="+62-99999999999" id="" className="bg-transparent flex-1 text-white focus:outline-none" />
+                        <input value={phone} onChange={(e) => setPhone(e.target.value)} type="number" name="" placeholder="+62-99999999999" id="" className="bg-transparent flex-1 text-white focus:outline-none" />
                     </div>
                 </div>
 
@@ -69,7 +79,7 @@ const BottomNav = () => {
                     </div>
                 </div>
 
-                <button onClick={() => navigate("/tables")} className="w-full bg-[#f6b100] text-[#f5f5f5] rounded-lg py-3 mt-8 hover:bg-yellow-700">
+                <button onClick={handleCreateOrder} className="w-full bg-[#f6b100] text-[#f5f5f5] rounded-lg py-3 mt-8 hover:bg-yellow-700">
                     Buat Pesanan
                 </button>
             </Modal>

@@ -1,16 +1,29 @@
 import React from "react"
+import { useSelector } from "react-redux"
+import { getTotalPrice } from "../../redux/slice/cartSlice"
 
 const Bill = () => {
+    const cartData = useSelector(state => state.cart)
+    const total = useSelector(getTotalPrice)
+    const taxRate = 1
+    const tax = (total * taxRate) / 100
+    const totalPriceWithTax = total + tax
+
     return (
     <>
     <div className="flex items-center justify-between px-5 mt-2">
-        <p className="text-xs text-[#ababab] font-medium mt-2">Items (4)</p>
-        <h1 className="text-[#f5f5f5] text-md font-bold">Rp30.000</h1>
+        <p className="text-xs text-[#ababab] font-medium mt-2">Items ({cartData.length})</p>
+        <h1 className="text-[#f5f5f5] text-md font-bold">Rp{total.toFixed(2)}</h1>
     </div>
 
     <div className="flex items-center justify-between px-5 mt-2">
         <p className="text-xs text-[#ababab] font-medium mt-2">Pajak (5.25%)</p>
-        <h1 className="text-[#f5f5f5] text-md font-bold">Rp30.000</h1>
+        <h1 className="text-[#f5f5f5] text-md font-bold">Rp{tax.toFixed(2)}</h1>
+    </div>
+
+    <div className="flex items-center justify-between px-5 mt-2">
+        <p className="text-xs text-[#ababab] font-medium mt-2">Total dengan Pajak</p>
+        <h1 className="text-[#f5f5f5] text-md font-bold">Rp{totalPriceWithTax.toFixed(2)}</h1>
     </div>
 
     <div className="flex items-center gap-3 px-5 mt-4">

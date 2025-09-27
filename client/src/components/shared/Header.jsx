@@ -1,10 +1,13 @@
 import React from "react"
+import { useSelector } from "react-redux"
 import { FaSearch } from "react-icons/fa"
 import { FaUserCircle } from "react-icons/fa"
 import { FaBell } from "react-icons/fa"
 import logo from "../../assets/images/logo.png"
 
 const Header = () => {
+    const customerData = useSelector(state => state.customer)
+
     return (
     <header className="flex justify-between items-center py-4 px-8 bg-[#1a1a1a]">
         {/* Logo */}
@@ -27,7 +30,7 @@ const Header = () => {
             <div className="flex items-center gap-3 cursor-pointer">
                 <FaUserCircle className="text-[#f5f5f5] text-4xl" />
                 <div className="flex flex-col items-start">
-                    <h1 className="text-md text-[#f5f5f5] font-semibold">Ryan Feb</h1>
+                    <h1 className="text-md text-[#f5f5f5] font-semibold">{customerData.customerName}</h1>
                     <p className="text-xs text-[#ababab] font-medium">Admin</p>
                 </div>
             </div>
