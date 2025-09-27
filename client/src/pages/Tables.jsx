@@ -2,14 +2,24 @@ import React, { useState } from "react"
 import BackButton from "../components/shared/BackButton"
 import BottomNav from "../components/shared/BottomNav"
 import TableCard from "../components/tables/TableCard"
-import { tables } from "../constants"
+import {keepPreviousData, useQuery} from "@tanstack/react-query"
+import { enqueueSnackbar } from "notistack";
+import {getTables} from "../https"
 
 const Tables = () => {
     const [status, setStatus] = useState("all")
     
-    const filteredTables = status === "all" 
-    ? tables 
-    : tables.filter((t) => t.status.toLowerCase() === status)
+    const {data: resData, isError} = useQuery({
+        queryKey: ["tables"],
+        queryFn: async () => {
+            return await getTables()
+        },
+        placeholderData: keepPreviousData,
+    })
+
+    if(isError) {
+        enqueueSnackbar("Something went wrong!", {variant: "error"})
+    }
     
     return (
     <section className="bg-[#1f1f1f] min-h-screen flex flex-col">
@@ -34,12 +44,13 @@ const Tables = () => {
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-            {filteredTables.map((table) => (
-                <TableCard 
-                    key={table.id}
-                    name={table.name}
+            {resData?.data.data.map((table) => (
+                <TableCard
+                    id={table._id}
+                    name={table.tableNo}
                     status={table.status}
-                    initials={table.initial} />
+                    initials={table?.currentOrder?.customerDetails.name}
+                    seats={table.seats} />
                     ))}
         </div>
         
