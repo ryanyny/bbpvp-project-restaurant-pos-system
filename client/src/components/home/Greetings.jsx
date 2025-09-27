@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react"
+import { useSelector } from "react-redux"
 
 const Greetings = () => {
+    const userData = useSelector(state => state.user)
     const [dateTime, setDateTime] = useState(new Date())
 
     useEffect(() => {
@@ -28,7 +30,7 @@ const Greetings = () => {
         {/* Left */}
         <div>
             <h1 className="text-white text-2xl font-semibold">
-                Selamat pagi, <span className="text-[#f6b100]">Ryan</span>
+                Selamat pagi, <span className="text-[#f6b100]">{userData.name || "Nama Pengguna"}</span>
             </h1>
             <p className="text-white/60 text-sm mt-1">
                 Berikan layanan terbaik anda untuk pelanggan 😄
