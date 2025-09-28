@@ -8,9 +8,9 @@ import { getTotalPrice } from "../../redux/slice/cartSlice"
 const Bill = () => {
     const cartData = useSelector(state => state.cart)
     const total = useSelector(getTotalPrice)
-    const customer = useSelector(state => state.customer)
-
     const taxRate = 5.25
+    
+    // PERBAIKAN: Pembulatan harga untuk menghindari desimal di Midtrans
     const tax = Math.ceil((total * taxRate) / 100) 
     const totalPriceWithTax = Math.ceil(total + tax)
 
@@ -26,10 +26,10 @@ const Bill = () => {
         try {
             const orderData = {
                 customerDetails: {
-                    name: customer.customerName,
-                    phone: customer.customerPhone,
-                    guests: customer.guests,
-                    email: customer.email || "customer@example.com", // <-- PERBAIKAN: Tambahkan email
+                    name: "John Doe",
+                    phone: "085750003456",
+                    guests: "2",
+                    email: "customer@example.com", // <-- PERBAIKAN: Tambahkan email
                 },
                 orderStatus: "pending",
                 bills: {
@@ -38,7 +38,6 @@ const Bill = () => {
                     totalWithTax: totalPriceWithTax, // <-- Nilai final yang dibulatkan (INTEGER)
                 },
                 items: cartData,
-                tableId: customer.tableNo,
             }
 
             const res = await axios.post("http://localhost:8000/api/orders", orderData, {withCredentials: true})
