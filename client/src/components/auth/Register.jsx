@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { register } from "../../https";
 import { useMutation } from "@tanstack/react-query";
 import { enqueueSnackbar } from "notistack";
+import { register } from "../../https";
 
-const Register = ({setIsRegister}) => {
+const Register = ({ setIsRegister }) => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -18,18 +18,15 @@ const Register = ({setIsRegister}) => {
 
   const handleRoleSelection = (selectedRole) => {
     setFormData({ ...formData, role: selectedRole });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    registerMutation.mutate(formData);
+    enqueueSnackbar(`Role diubah ke ${selectedRole}`, { variant: "info" });
   };
 
   const registerMutation = useMutation({
     mutationFn: (reqData) => register(reqData),
     onSuccess: (res) => {
       const { data } = res;
-      enqueueSnackbar(data.message, { variant: "success" });
+      enqueueSnackbar(data.message || "Register berhasil!", { variant: "success" });
+
       setFormData({
         name: "",
         email: "",
@@ -37,113 +34,128 @@ const Register = ({setIsRegister}) => {
         password: "",
         role: "",
       });
-      
+
       setTimeout(() => {
         setIsRegister(false);
       }, 1500);
     },
     onError: (error) => {
-      const { response } = error;
-      const message = response.data.message;
+      const message = error?.response?.data?.message || "Terjadi kesalahan. Coba lagi.";
       enqueueSnackbar(message, { variant: "error" });
     },
   });
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!formData.role) {
+      enqueueSnackbar("Pilih dulu jabatan karyawan!", { variant: "warning" });
+      return;
+    }
+    registerMutation.mutate(formData);
+  };
+
   return (
-    <div>
+    <div className="p-4">
       <form onSubmit={handleSubmit}>
+        {/* Nama */}
         <div>
           <label className="block text-[#ababab] mb-2 text-sm font-medium">
-            Employee Name
+            Nama Karyawan
           </label>
-          <div className="flex item-center rounded-lg p-5 px-4 bg-[#1f1f1f]">
+          <div className="flex items-center rounded-lg p-5 px-4 bg-[#1f1f1f]">
             <input
               type="text"
               name="name"
               value={formData.name}
               onChange={handleChange}
-              placeholder="Enter employee name"
+              placeholder="Masukkan nama karyawan"
               className="bg-transparent flex-1 text-white focus:outline-none"
               required
             />
           </div>
         </div>
+
+        {/* Email */}
         <div>
           <label className="block text-[#ababab] mb-2 mt-3 text-sm font-medium">
-            Employee Email
+            Email Karyawan
           </label>
-          <div className="flex item-center rounded-lg p-5 px-4 bg-[#1f1f1f]">
+          <div className="flex items-center rounded-lg p-5 px-4 bg-[#1f1f1f]">
             <input
               type="email"
               name="email"
               value={formData.email}
               onChange={handleChange}
-              placeholder="Enter employee email"
+              placeholder="Masukkan email karyawan"
               className="bg-transparent flex-1 text-white focus:outline-none"
               required
             />
           </div>
         </div>
+
+        {/* Phone */}
         <div>
           <label className="block text-[#ababab] mb-2 mt-3 text-sm font-medium">
-            Employee Phone
+            No Telp Karyawan
           </label>
-          <div className="flex item-center rounded-lg p-5 px-4 bg-[#1f1f1f]">
+          <div className="flex items-center rounded-lg p-5 px-4 bg-[#1f1f1f]">
             <input
               type="number"
               name="phone"
               value={formData.phone}
               onChange={handleChange}
-              placeholder="Enter employee phone"
+              placeholder="Masukkan no telp karyawan"
               className="bg-transparent flex-1 text-white focus:outline-none"
               required
             />
           </div>
         </div>
+
+        {/* Password */}
         <div>
           <label className="block text-[#ababab] mb-2 mt-3 text-sm font-medium">
-            Password
+            Kata Sandi
           </label>
-          <div className="flex item-center rounded-lg p-5 px-4 bg-[#1f1f1f]">
+          <div className="flex items-center rounded-lg p-5 px-4 bg-[#1f1f1f]">
             <input
               type="password"
               name="password"
               value={formData.password}
               onChange={handleChange}
-              placeholder="Enter password"
+              placeholder="Masukkan kata sandi"
               className="bg-transparent flex-1 text-white focus:outline-none"
               required
             />
           </div>
         </div>
+
+        {/* Role */}
         <div>
           <label className="block text-[#ababab] mb-2 mt-3 text-sm font-medium">
-            Choose your role
+            Pilih Jabatan Karyawan
           </label>
-
-          <div className="flex item-center gap-3 mt-4">
-            {["Waiter", "Cashier", "Admin"].map((role) => {
-              return (
-                <button
-                  key={role}
-                  type="button"
-                  onClick={() => handleRoleSelection(role)}
-                  className={`bg-[#1f1f1f] px-4 py-3 w-full rounded-lg text-[#ababab] ${
-                    formData.role === role ? "bg-indigo-700" : ""
-                  }`}
-                >
-                  {role}
-                </button>
-              );
-            })}
+          <div className="flex items-center gap-3 mt-4">
+            {["admin", "kasir", "waiter"].map((role) => (
+              <button
+                key={role}
+                type="button"
+                onClick={() => handleRoleSelection(role)}
+                className={`bg-[#1f1f1f] px-4 py-3 w-full rounded-lg text-[#ababab] font-medium transition-colors ${
+                  formData.role === role ? "bg-indigo-700 text-white" : ""
+                }`}
+              >
+                {role}
+              </button>
+            ))}
           </div>
         </div>
 
+        {/* Submit */}
         <button
           type="submit"
-          className="w-full rounded-lg mt-6 py-3 text-lg bg-yellow-400 text-gray-900 font-bold"
+          className="w-full rounded-lg mt-6 py-3 text-lg bg-yellow-400 text-gray-900 font-bold hover:bg-yellow-500 transition-colors"
         >
-          Sign up
+          Daftar
         </button>
       </form>
     </div>

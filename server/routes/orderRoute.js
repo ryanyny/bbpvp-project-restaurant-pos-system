@@ -1,6 +1,11 @@
 const express = require("express")
 const { isVerifiedUser } = require("../middlewares/tokenVerification")
-const { addOrder, getOrders, getOrderById, updateOrder } = require("../controllers/orderController")
+const {
+    addOrder,
+    getOrders,
+    getOrderById,
+    updateOrder,
+} = require("../controllers/orderController")
 
 const router = express.Router()
 

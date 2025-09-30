@@ -1,27 +1,77 @@
 const mongoose = require("mongoose")
 
-const orderSchema = new mongoose.Schema({
-    customerDetails: {
-        name: {type: String, required: true},
-        phone: {type: String, required: true},
-        guests: {type: Number, required: true},
-        email: {type: String, required: false}
+const orderItemSchema = new mongoose.Schema({
+    item: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Item",
+        required: true,
     },
-    orderStatus: {
+    name: {
         type: String,
         required: true,
     },
-    orderDate: {
-        type: Date,
-        default: Date.now(),
+    quantity: {
+        type: Number,
+        required: true,
+        min: 1,
     },
-    bills: {
-        total: {type: Number, required: true},
-        tax: {type: Number, required: true},
-        totalWithTax: {type: Number, required: true},
+    price: {
+        type: Number,
+        required: true,
     },
-    items: [],
-    table: {type: mongoose.Schema.Types.ObjectId, ref: "Table"}
-}, {timestamps: true})
+})
+
+const orderSchema = new mongoose.Schema(
+    {
+        customerDetails: {
+            name: {
+                type: String,
+                required: true
+            },
+            phone: {
+                type: String,
+                required: true,
+            },
+            guests: {
+                type: Number,
+                required: true,
+            },
+            email: {
+                type: String,
+                required: false,
+            },
+        },
+        orderStatus: {
+            type: String,
+            enum: ["tertunda", "memasak", "disajikan", "dibayar", "dibatalkan"],
+            default: "tertunda",
+        },
+        orderDate: {
+            type: Date,
+            default: Date.now(),
+        },
+        bills: {
+            total: {
+            type: Number,
+            required: true,
+        },
+        tax: {
+            type: Number,
+            required: true,
+        },
+        totalWithTax: {
+            type: Number,
+            required: true,
+        },
+    },
+
+    items: [orderItemSchema],
+    table: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Table",
+    },
+},
+{timestamps: true}
+)
 
 module.exports = mongoose.model("Order", orderSchema)

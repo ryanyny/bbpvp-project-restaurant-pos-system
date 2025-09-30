@@ -7,16 +7,16 @@ const isVerifiedUser = async (req, res, next) => {
     try {
         const {accessToken} = req.cookies
 
-        if(!accessToken) {
+        if (!accessToken) {
             const error = createHttpError(401, "Please provide token!")
 
             return next(error)
         }
 
         const decodeToken = jwt.verify(accessToken, config.accessTokenSecret)
-
         const user = await User.findById(decodeToken._id)
-        if(!user) {
+
+        if (!user) {
             const error = createHttpError(401, "User not exist!")
             return next(error)
         }

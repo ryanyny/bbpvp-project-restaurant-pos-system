@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit"
+import {createSlice} from "@reduxjs/toolkit"
 
 const initialState = {
     orderId: "",
@@ -27,9 +27,9 @@ const customerSlice = createSlice({
         },
         updateTable: (state, action) => {
             state.tableNo = action.payload.tableNo
-        }
-    }
+        },
+    },
 })
 
-export const { setCustomer, removeCustomer, updateTable } = customerSlice.actions
+export const {setCustomer, removeCustomer, updateTable} = customerSlice.actions;
 export default customerSlice.reducer

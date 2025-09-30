@@ -1,9 +1,9 @@
-import React from 'react'
+import React from "react"
 
 const FullScreenLoader = () => {
   return (
     <div className="fullscreen-loader">
-        <div className="spinner"></div>
+      <div className="spinner"></div>
     </div>
   )
 }

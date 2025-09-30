@@ -1,23 +1,32 @@
-import { axiosWrapper } from "./axiosWrapper";
+import {axiosWrapper} from "./axiosWrapper"
 
-// API Endpoints
+export const login = (data) => axiosWrapper.post("/api/users/login", data)
+export const register = (data) =>
+  axiosWrapper.post("/api/users/register", data)
+export const getUserData = () => axiosWrapper.get("/api/users/")
+export const logout = () => axiosWrapper.post("/api/users/logout")
 
-// Auth Endpoints
-export const login = (data) => axiosWrapper.post("/api/user/login", data);
-export const register = (data) => axiosWrapper.post("/api/user/register", data);
-export const getUserData = () => axiosWrapper.get("/api/user");
-export const logout = () => axiosWrapper.post("/api/user/logout");
+export const getTables = () => axiosWrapper.get("/api/tables");
+export const addTable = (data) => axiosWrapper.post("/api/tables", data);
+export const updateTable = (id, data) => axiosWrapper.put(`/api/tables/${id}`, data);
+export const deleteTable = (id) => axiosWrapper.delete(`/api/tables/${id}`);
 
-// Table Endpoints
-export const addTable = (data) => axiosWrapper.post("/api/table/", data);
-export const getTables = () => axiosWrapper.get("/api/table");
-export const updateTable = ({ tableId, ...tableData }) =>
-  axiosWrapper.put(`/api/table/${tableId}`, tableData);
 
-export const getMenus = () => axiosWrapper.get("/api/menus");
+export const addMenu = (data) => axiosWrapper.post("/api/menus", data)
+export const getMenus = () => axiosWrapper.get("/api/menus")
+export const updateMenu = (menuId, menuData) =>
+  axiosWrapper.put(`/api/menus/${menuId}`, menuData)
+export const deleteMenu = (menuId) =>
+  axiosWrapper.delete(`/api/menus/${menuId}`)
 
-// Order Endpoints
-export const addOrder = (data) => axiosWrapper.post("/api/orders/", data);
-export const getOrders = () => axiosWrapper.get("/api/order");
+export const addItem = (data) => axiosWrapper.post("/api/items", data);
+export const getItems = () => axiosWrapper.get("/api/items");
+export const updateItem = (itemId, itemData) =>
+  axiosWrapper.put(`/api/items/${itemId}`, itemData);
+export const deleteItem = (itemId) =>
+  axiosWrapper.delete(`/api/items/${itemId}`);
+
+export const addOrder = (data) => axiosWrapper.post("/api/orders", data);
+export const getOrders = () => axiosWrapper.get("/api/orders");
 export const updateOrderStatus = ({ orderId, orderStatus }) =>
-  axiosWrapper.put(`/api/order/${orderId}`, { orderStatus });
+  axiosWrapper.put(`/api/orders/${orderId}`, { orderStatus })

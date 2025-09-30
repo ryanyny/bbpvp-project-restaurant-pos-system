@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react"
-import {getUserData} from "../https"
-import { removeUser, setUser } from "../redux/slice/userSlice"
-import { useDispatch } from "react-redux"
-import { useNavigate } from "react-router-dom"
+import {useEffect, useState} from "react";
+import {useDispatch} from "react-redux";
+import {useNavigate} from "react-router-dom";
+import {getUserData} from "../https";
+import {removeUser, setUser} from "../redux/slice/userSlice";
 
 const useLoadData = () => {
     const dispatch = useDispatch()
@@ -12,17 +12,17 @@ const useLoadData = () => {
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                const {data} = await getUserData()
+                const { data } = await getUserData()
                 console.log(data)
 
-                const {_id, name, email, phone, role} = data.data
-                dispatch(setUser({_id, name, email, phone, role}))
+                const { _id, name, email, phone, role } = data.data
+                dispatch(setUser({ _id, name, email, phone, role }))
             } catch (error) {
                 dispatch(removeUser())
                 navigate("/auth")
                 console.log(error)
             } finally {
-                setIsLoading(false)
+                setIsLoading(false);
             }
         }
 

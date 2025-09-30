@@ -1,73 +1,74 @@
-const createHttpError = require("http-errors")
-const Table = require("../models/tableModel")
-const { default: mongoose } = require("mongoose")
+const Table = require("../models/tableModel");
+const mongoose = require("mongoose");
 
-const addTable = async (req, res, next) => {
-    try {
-        const {tableNo, seats} = req.body
+// Create Table
+const createTable = async (req, res) => {
+  try {
+    const { tableNo, seats } = req.body;
 
-        if(!tableNo) {
-            const error = createHttpError(400, "Please provide table no!")
+    if (!tableNo || !seats)
+      return res.status(400).json({ error: "tableNo & seats wajib diisi" });
 
-            return error
-        }
+    const existing = await Table.findOne({ tableNo });
+    if (existing)
+      return res.status(400).json({ error: "tableNo sudah ada" });
 
-        const isTablePresent = await Table.findOne({tableNo})
-        if(isTablePresent) {
-            const error = createHttpError(400, "Table already exist!")
+    const table = await Table.create({ tableNo, seats });
+    res.status(201).json({ success: true, data: table });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
 
-            return error
-        }
+// Get All Tables
+const getTables = async (req, res) => {
+  try {
+    const tables = await Table.find().populate("currentOrder");
+    res.json({ success: true, data: tables });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
 
-        const newTable = new Table({tableNo, seats})
-        await newTable.save()
+// Update Table
+const updateTable = async (req, res) => {
+  try {
+    const { tableNo, seats, status, currentOrder } = req.body;
+    const { id } = req.params;
 
-        res.status(201).json({success: true, message: "Table added!", data: newTable})
-    } catch (error) {
-        return next(error)
-    }
-}
+    if (!mongoose.Types.ObjectId.isValid(id))
+      return res.status(400).json({ error: "ID tidak valid" });
 
-const getTables = async (req, res, next) => {
-    try {
-        const tables = await Table.find().populate({
-            path: "currentOrder",
-            select: "customerDetails",
-        })
+    if (status && !["Tersedia", "Terisi"].includes(status))
+      return res.status(400).json({ error: "status tidak valid" });
 
-        res.status(200).json({success: true, data: tables})
-    } catch (error) {
-        return next(error)
-    }
-}
+    const table = await Table.findByIdAndUpdate(
+      id,
+      { tableNo, seats, status, currentOrder: currentOrder || null },
+      { new: true }
+    );
 
-const updateTable = async (req, res, next) => {
-    try {
-        const {status, orderId} = req.body
-        const {id} = req.params
-        
-        if(!mongoose.Types.ObjectId.isValid(id)) {
-            const error = createHttpError(404, "Invalid id!")
-        
-            return next(error)
-        }
+    if (!table) return res.status(404).json({ error: "Table tidak ditemukan" });
+    res.json({ success: true, data: table });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
 
-        const table = await Table.findByIdAndUpdate(
-            id,
-            {status, currentOrder: orderId},
-            {new: true}
-        )
+// Delete Table
+const deleteTable = async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id))
+      return res.status(400).json({ error: "ID tidak valid" });
 
-        if(!table) {
-            const error = createHttpError(404, "Table not found!")
+    const table = await Table.findByIdAndDelete(id);
+    if (!table) return res.status(404).json({ error: "Table tidak ditemukan" });
 
-            return error
-        }
+    res.json({ success: true, message: "Table deleted" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
 
-        res.status(200).json({success: true, message: "Table updated!", data: table})
-    } catch (error) {
-        return next(error)
-    }
-}
-
-module.exports = {addTable, getTables, updateTable}
+module.exports = { createTable, getTables, updateTable, deleteTable };

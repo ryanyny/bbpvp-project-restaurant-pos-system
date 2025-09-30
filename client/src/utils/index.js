@@ -10,26 +10,45 @@ export const getBgColor = () => {
     "#025cca",
     "#be3e3f",
     "#02ca3a",
-  ];
-  const randomBg = Math.floor(Math.random() * bgarr.length);
-  const color = bgarr[randomBg];
-  return color;
-};
+  ]
+
+  const randomBg = Math.floor(Math.random() * bgarr.length)
+  const color = bgarr[randomBg]
+
+  return color
+}
 
 export const getAvatarName = (name) => {
-  if(!name) return "";
+  if (!name) return ""
 
-  return name.split(" ").map(word => word[0]).join("").toUpperCase();
-
+  return name
+    .split(" ")
+    .map((word) => word[0])
+    .join("")
+    .toUpperCase()
 }
 
 export const formatDate = (date) => {
   const months = [
-    'January', 'February', 'March', 'April', 'May', 'June',
-    'July', 'August', 'September', 'October', 'November', 'December'
-  ];
-  return `${months[date.getMonth()]} ${String(date.getDate()).padStart(2, '0')}, ${date.getFullYear()}`;
-};
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ]
+  
+  return `${months[date.getMonth()]} ${String(date.getDate()).padStart(
+    2,
+    "0"
+  )}, ${date.getFullYear()}`
+}
 
 export const formatDateAndTime = (date) => {
   const dateAndTime = new Date(date).toLocaleString("en-US", {
@@ -40,8 +59,16 @@ export const formatDateAndTime = (date) => {
     minute: "2-digit",
     second: "2-digit",
     hour12: true,
-    timeZone: "Asia/Kolkata"
+    timeZone: "Asia/Kolkata",
   })
 
-  return dateAndTime;
+  return dateAndTime
 }
+
+// utils/formatRupiah.js
+export const formatRupiah = (number) => {
+  return new Intl.NumberFormat("id-ID", {
+    minimumFractionDigits: 0, // hilangkan desimal
+    maximumFractionDigits: 0,
+  }).format(number);
+};
